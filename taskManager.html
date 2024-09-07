@@ -1,0 +1,44 @@
+<template>
+    <lightning-card title="Task Manager" icon-name="standard:task">
+        
+        <!-- Task Creation Form -->
+        <div class="slds-m-around_medium">
+            <lightning-input label="Task Subject" name="subject" value={newTask.subject} onchange={handleInputChange}></lightning-input>
+            <lightning-combobox label="Priority" name="priority" value={newTask.priority}
+                                options={priorityOptions} onchange={handleInputChange}></lightning-combobox>
+            <lightning-input label="Due Date" name="dueDate" type="date" value={newTask.dueDate} onchange={handleInputChange}></lightning-input>
+            <lightning-button variant="brand" label="Create Task" onclick={handleCreateTask}></lightning-button>
+        </div>
+        
+        <!-- Display Error Messages -->
+        <template if:true={error}>
+            <div class="slds-text-color_error slds-p-horizontal_medium">{error}</div>
+        </template>
+        
+        <!-- Task List -->
+        <template if:true={tasks.length}>
+            <ul class="slds-p-around_medium">
+                <template for:each={tasks} for:item="task">
+                    <li key={task.Id} class="slds-box slds-box_x-small slds-m-bottom_small">
+                        <div class="slds-grid slds-wrap slds-grid_align-spread">
+                            <div>
+                                <strong>{task.Subject}</strong> <br/>
+                                <small>Due: {task.ActivityDate}</small>
+                            </div>
+                            <div>
+                                <lightning-button variant="success" label="Complete" data-id={task.Id} onclick={handleCompleteTask} class="slds-m-right_small"></lightning-button>
+                                <lightning-button variant="destructive" label="Delete" data-id={task.Id} onclick={handleDeleteTask}></lightning-button>
+
+                            </div>
+                        </div>
+                    </li>
+                </template>
+            </ul>
+        </template>
+        
+        <!-- No Tasks Available -->
+        <template if:true={showNoTasksMessage}>
+            <div class="slds-p-horizontal_medium">No tasks available.</div>
+        </template>
+    </lightning-card>
+</template>
